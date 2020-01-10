@@ -1,7 +1,7 @@
 Summary: Clients for remote access commands (rsh, rlogin, rcp)
 Name: rsh
 Version: 0.17
-Release: 60%{?dist}
+Release: 64%{?dist}
 License: BSD
 Group: Applications/Internet
 
@@ -75,6 +75,10 @@ Patch36: netkit-rsh-0.17-longname.patch
 Patch37: netkit-rsh-0.17-arg_max.patch
 Patch38: netkit-rsh-0.17-rh448904.patch
 Patch39: netkit-rsh-0.17-rh461903.patch
+Patch40: 0001-rshd-remove-unneeded-setpwent-and-getpwent-calls.patch
+Patch41: 0001-rshd-use-upper-bound-for-cmdbuflen.patch
+Patch42: netkit-rsh-0.17-rh896583.patch
+Patch43: 0001-rshd-include-missing-header-file.patch
 
 %description
 The rsh package contains a set of programs which allow users to run
@@ -139,12 +143,17 @@ from other machines
 %patch37 -p1 -b .arg_max
 %patch38 -p1 -b .rh448904
 %patch39 -p1 -b .rh461903
+%patch40 -p1 -b .rh749283
+%patch41 -p1 -b .rh802367
+%patch42 -b .rh896583
+%patch43 -p1 -b .waitpid
 
 # No, I don't know what this is doing in the tarball.
 rm -f rexec/rexec
 
 %build
 sh configure --with-c-compiler=gcc
+export RPM_OPT_FLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing"
 %ifarch s390 s390x
 %{__perl} -pi -e '
     s,^CC=.*$,CC=cc,;
@@ -208,6 +217,19 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_mandir}/man8/*.8*
 
 %changelog
+* Mon May 19 2014 Michal Sekletar <msekleta@redhat.com> - 0.17-64
+- include missing header file
+
+* Mon May 19 2014 Michal Sekletar <msekleta@redhat.com> - 0.17-63
+- close pam session properly (#1098955)
+
+* Wed May 07 2014 Michal Sekletar <msekleta@redhat.com> - 0.17-62
+- disable strict aliasing optimizations (#1094360)
+
+* Mon May 05 2014 Michal Sekletar <msekleta@redhat.com> - 0.17-61
+- remove unneeded call to setpwnet and getpwent (#749283)
+- use upper bound for cmdbuflen (#802367)
+
 * Tue Feb 09 2010 Adam Tkac <atkac redhat com> - 0.17-60
 - merge review related fixes (#226379)
 - remove unused patches

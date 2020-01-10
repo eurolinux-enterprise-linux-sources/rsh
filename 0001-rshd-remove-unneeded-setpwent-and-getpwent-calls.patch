@@ -1,0 +1,32 @@
+From ce20fa3adf953895386d7351c142ca806304aeb6 Mon Sep 17 00:00:00 2001
+From: rpm-build <rpm-build>
+Date: Mon, 5 May 2014 11:48:43 +0200
+Subject: [PATCH] rshd: remove unneeded setpwent and getpwent calls
+
+---
+ rshd/rshd.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/rshd/rshd.c b/rshd/rshd.c
+index 1226a44..66c5703 100644
+--- a/rshd/rshd.c
++++ b/rshd/rshd.c
+@@ -487,7 +487,6 @@ doit(struct sockaddr_storage *fromp, socklen_t fromlen)
+ 	hostname = findhostname((struct sockaddr *)fromp, fromlen,
+ 		remuser, locuser, cmdbuf);
+ 
+-	setpwent();
+ 	pwd = doauth(remuser, hostname, locuser);
+ 	if (pwd == NULL) {
+ 		if (log_audit(remuser, -1, hostname, 0) > 0) {
+@@ -596,7 +595,6 @@ doit(struct sockaddr_storage *fromp, socklen_t fromlen)
+ 			putenv(env[i]);
+ #endif
+ 
+-	endpwent();
+ 	if (paranoid) {
+ 	    syslog(LOG_INFO|LOG_AUTH, "%s@%s as %s: cmd='%s'",
+ 		   remuser, hostname, locuser, cmdbuf);
+-- 
+1.8.3.1
+
