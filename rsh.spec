@@ -1,7 +1,7 @@
 Summary: Clients for remote access commands (rsh, rlogin, rcp)
 Name: rsh
 Version: 0.17
-Release: 64%{?dist}
+Release: 64%{?dist}.1
 License: BSD
 Group: Applications/Internet
 
@@ -80,6 +80,10 @@ Patch41: 0001-rshd-use-upper-bound-for-cmdbuflen.patch
 Patch42: netkit-rsh-0.17-rh896583.patch
 Patch43: 0001-rshd-include-missing-header-file.patch
 
+# bz 1450821
+# patch from F19: http://pkgs.fedoraproject.org/cgit/rpms/rsh.git/commit/?h=f19&id=3c095f9e2ad63c6026f213bc1d0261ae1e2669e4
+Patch44: netkit-rsh-0.17-rlogin-forkpty.patch
+
 %description
 The rsh package contains a set of programs which allow users to run
 commands on remote machines, login to other machines and copy files
@@ -147,6 +151,7 @@ from other machines
 %patch41 -p1 -b .rh802367
 %patch42 -b .rh896583
 %patch43 -p1 -b .waitpid
+%patch44 -p1 -b .forkpty
 
 # No, I don't know what this is doing in the tarball.
 rm -f rexec/rexec
@@ -217,6 +222,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_mandir}/man8/*.8*
 
 %changelog
+* Mon May 15 2017 Michal Ruprich <mruprich@redhat.com> - 0.17-64.1
+- Resolves: #1450821 - rlogin fails to connect rsh-server after updating util-linux-ng from version 2.17.2-12.18.el6 to 2.17.2-12.24.el6
+
 * Mon May 19 2014 Michal Sekletar <msekleta@redhat.com> - 0.17-64
 - include missing header file
 
