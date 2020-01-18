@@ -3,7 +3,7 @@
 Summary: Clients for remote access commands (rsh, rlogin, rcp)
 Name: rsh
 Version: 0.17
-Release: 75%{?dist}
+Release: 76%{?dist}
 License: BSD
 Group: Applications/Internet
 
@@ -88,6 +88,7 @@ Patch45: netkit-rsh-0.17-rh947213.patch
 Patch46: 0001-rshd-use-sockaddr_in-for-non-native-IPv6-clients.patch
 Patch47: 0002-rlogind-use-sockaddr_in-for-non-native-IPv6-client.patch
 Patch48: netkit-rsh-0.17-ipv6-rexec.patch
+Patch49: 0001-rshd-use-upper-bound-for-cmdbuflen.patch
 
 %description
 The rsh package contains a set of programs which allow users to run
@@ -164,12 +165,14 @@ from other machines
 %patch46 -p1
 %patch47 -p1
 %patch48 -p1 -b .ipv6-rexec
+%patch49 -p1 -b .cmdbuflen
 
 # No, I don't know what this is doing in the tarball.
 rm -f rexec/rexec
 
 %build
 sh configure --with-c-compiler=gcc
+export RPM_OPT_FLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing"
 %ifarch s390 s390x
 %{__perl} -pi -e '
     s,^CC=.*$,CC=cc,;
@@ -247,6 +250,10 @@ install -m644 %SOURCE10 %{buildroot}%{_unitdir}/rexec.socket
 %{_mandir}/man8/*.8*
 
 %changelog
+* Mon Aug 18 2014 Michal Sekletar <msekleta@redhat.com> - 0.17-76
+- disable strict aliasing optimizations (#1095306)
+- use upper bound for cmdbuflen (#1093749)
+
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 0.17-75
 - Mass rebuild 2014-01-24
 
