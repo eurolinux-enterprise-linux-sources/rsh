@@ -3,7 +3,7 @@
 Summary: Clients for remote access commands (rsh, rlogin, rcp)
 Name: rsh
 Version: 0.17
-Release: 73%{?dist}
+Release: 75%{?dist}
 License: BSD
 Group: Applications/Internet
 
@@ -247,6 +247,12 @@ install -m644 %SOURCE10 %{buildroot}%{_unitdir}/rexec.socket
 %{_mandir}/man8/*.8*
 
 %changelog
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 0.17-75
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 0.17-74
+- Mass rebuild 2013-12-27
+
 * Mon Jul 15 2013 Michal Sekletar <msekleta@redhat.com> - 0.17-73
 - add IPv6 support to rexec and rexecd
 - enable hardened build
