@@ -1,0 +1,12 @@
+diff --git a/rshd/rshd.c b/rshd/rshd.c
+index 546b908..9b0024e 100644
+--- a/rshd/rshd.c
++++ b/rshd/rshd.c
+@@ -212,6 +212,7 @@ static void stderr_parent(int sock, int pype, int pid) {
+ 	    if (cc <= 0) {
+ 		shutdown(sock, 2);
+ 		FD_CLR(pype, &readfrom);
++		close(sock);
+ 		guys--;
+ 	    } 
+ 	    else write(sock, buf, cc);

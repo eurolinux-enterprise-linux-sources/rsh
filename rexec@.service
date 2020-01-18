@@ -5,3 +5,4 @@ After=local-fs.target
 [Service]
 ExecStart=-/usr/sbin/in.rexecd
 StandardInput=socket
+IgnoreSIGPIPE=no

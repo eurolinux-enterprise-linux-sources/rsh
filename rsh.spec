@@ -3,7 +3,7 @@
 Summary: Clients for remote access commands (rsh, rlogin, rcp)
 Name: rsh
 Version: 0.17
-Release: 76%{?dist}.1
+Release: 79%{?dist}
 License: BSD
 Group: Applications/Internet
 
@@ -90,6 +90,9 @@ Patch47: 0002-rlogind-use-sockaddr_in-for-non-native-IPv6-client.patch
 Patch48: netkit-rsh-0.17-ipv6-rexec.patch
 Patch49: 0001-rshd-use-upper-bound-for-cmdbuflen.patch
 Patch50: 0001-rcp-don-t-advance-pointer-returned-from-rcp_basename.patch
+Patch51: netkit-rsh-0.17-pam-warning.patch
+Patch52: netkit-rsh-0.17-rexec-cmdbuflen.patch
+Patch53: netkit-rsh-0.17-remote-close.patch
 
 %description
 The rsh package contains a set of programs which allow users to run
@@ -168,6 +171,9 @@ from other machines
 %patch48 -p1 -b .ipv6-rexec
 %patch49 -p1 -b .cmdbuflen
 %patch50 -p1 -b .basename
+%patch51 -p1 -b .pam-warning
+%patch52 -p1 -b .rexec-cmdbuflen
+%patch53 -p1 -b .remote-close
 
 # No, I don't know what this is doing in the tarball.
 rm -f rexec/rexec
@@ -252,8 +258,18 @@ install -m644 %SOURCE10 %{buildroot}%{_unitdir}/rexec.socket
 %{_mandir}/man8/*.8*
 
 %changelog
-* Thu Mar 26 2015 Michal Sekletar <msekleta@redhat.com> - 0.17-76.1
-- don't truncate first character of dirname when doing recursive copy (#1209816)
+* Sat Apr 28 2018 Michal Ruprich <mruprich@redhat.com> - 0.17-79
+- Related: #1477207 - service and socket file directives should be under [Unit]
+
+* Wed Apr 18 2018 Michal Ruprich <mruprich@redhat.com> - 0.17-78
+- Resolves: #1502657 - Copying remote file to local dir fails with "rcp: protocol screwup: expected control record"
+- Resolves: #1338037 - rsh/rlogin sessions ignore SIGPIPE due to systemd
+- Resolves: #1477207 - rlogin killed when changing run level
+- Resolves: #1503112 - rexecd Could not allocate space for cmdbuf
+- Resolves: #1505226 - have a proposed patch for rsh-0.17-76.el7_1.1
+
+* Thu Mar 26 2015 Michal Sekletar <msekleta@redhat.com> - 0.17-77
+- don't truncate first character of dirname when doing recursive copy (#1129483)
 
 * Mon Aug 18 2014 Michal Sekletar <msekleta@redhat.com> - 0.17-76
 - disable strict aliasing optimizations (#1095306)

@@ -1,7 +1,9 @@
 [Unit]
 Description=Remote Login Facilities Server
 After=local-fs.target
+IgnoreOnIsolate=true
 
 [Service]
 ExecStart=-/usr/sbin/in.rlogind
 StandardInput=socket
+IgnoreSIGPIPE=no

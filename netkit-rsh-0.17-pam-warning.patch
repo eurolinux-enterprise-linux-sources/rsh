@@ -1,0 +1,17 @@
+diff --git a/rcp/rcp.c b/rcp/rcp.c
+index 897185f..635dd49 100644
+--- a/rcp/rcp.c
++++ b/rcp/rcp.c
+@@ -721,6 +721,12 @@ sink(int argc, char *argv[])
+ 			(void)write(rem, "", 1);
+ 			continue;
+ 		}
++		if(*cp == 'W') {
++			while (*cp != '\0')
++				cp++;
++
++			continue;
++		}
+ 		if (*cp != 'C' && *cp != 'D') {
+ 			/*
+ 			 * Check for the case "rcp remote:foo\* local:bar".
